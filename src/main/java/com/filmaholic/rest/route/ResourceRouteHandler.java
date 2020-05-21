@@ -28,7 +28,6 @@ public class ResourceRouteHandler {
     this.resourceService = resourceService;
   }
 
-  @CrossOrigin
   public Mono<ServerResponse> getResource(ServerRequest request) {
     String fileName = request.pathVariable("resourceName");
     HttpHeaders requestHeaders = request.headers().asHttpHeaders();
@@ -45,7 +44,6 @@ public class ResourceRouteHandler {
         });
   }
 
-  @CrossOrigin
   public Mono<ServerResponse> findAll(ServerRequest request) {
     Mono<Pagination> pagination = request.bodyToMono(Pagination.class);
     Mono<Page<ResourceMetaData>> metaData = resourceService.findAll(pagination)
