@@ -4,6 +4,7 @@ import com.filmaholic.service.ResourceService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.codec.multipart.FilePart;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+@CrossOrigin
 @RestController
 @RequestMapping("api/v1/files")
 public class ResourceController {
@@ -22,6 +24,7 @@ public class ResourceController {
     this.resourceService = resourceService;
   }
 
+  @CrossOrigin
   @PostMapping(
       value = "upload",
       consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -32,6 +35,7 @@ public class ResourceController {
     resourceService.uploadResource(resource, resourceName);
   }
 
+  @CrossOrigin
   @DeleteMapping("{resourceName}")
   @ResponseStatus(HttpStatus.OK)
   public Boolean deleteResource(@PathVariable("resourceName") final String resourceName) {

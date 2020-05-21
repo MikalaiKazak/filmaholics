@@ -12,6 +12,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.Exceptions;
@@ -27,6 +28,7 @@ public class ResourceRouteHandler {
     this.resourceService = resourceService;
   }
 
+  @CrossOrigin
   public Mono<ServerResponse> getResource(ServerRequest request) {
     String fileName = request.pathVariable("resourceName");
     HttpHeaders requestHeaders = request.headers().asHttpHeaders();
@@ -36,12 +38,14 @@ public class ResourceRouteHandler {
         .status(HttpStatus.PARTIAL_CONTENT)
         .contentLength(r.getCount())
         .headers(headers -> headers.setCacheControl(CacheControl.noCache()))
+        .header("Access-Control-Allow-Origin", "*")
         .body(resourceRegion, ResourceRegion.class))
         .doOnError(throwable -> {
           throw Exceptions.propagate(throwable);
         });
   }
 
+  @CrossOrigin
   public Mono<ServerResponse> findAll(ServerRequest request) {
     Mono<Pagination> pagination = request.bodyToMono(Pagination.class);
     Mono<Page<ResourceMetaData>> metaData = resourceService.findAll(pagination)
